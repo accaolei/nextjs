@@ -10,7 +10,7 @@ export default function Index(){
     const [value, setValue] = useState([
         {
         type: 'paragraph',
-        children: [{ text: 'A line of text in a paragraph.' }],
+        children: [{ text: 'Hello, 一个编辑器.' }],
         },
     ])
 
