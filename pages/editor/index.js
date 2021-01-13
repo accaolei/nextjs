@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import styles from '../../styles/editor.module.css'
+import Head from 'next/head';
 
 export default function Index(){
     const editor = useMemo(() => withReact(createEditor()), [])
@@ -15,6 +16,9 @@ export default function Index(){
 
     return (
         <div className={styles.editor}>
+            <Head>
+                <title>基于slate的编辑器</title>
+            </Head>
             <Slate
                 editor={editor}
                 value={value}
