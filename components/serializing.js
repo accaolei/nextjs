@@ -2,7 +2,9 @@ import {Node,Text} from 'slate'
 import escapeHtml from 'escape-html'
 
 
-
+export const PlainSerialize =nodes =>{
+    return nodes.map(n=>Node.string(n)).join("\n")
+}
 
 export const Serialize = node=>{
     console.log(node,'node')
