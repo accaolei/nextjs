@@ -1,65 +1,65 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
-import { Slate, Editable, withReact, useSlate,useSelected,useFocused } from 'slate-react'
+import { Slate, Editable, withReact, useSlate, useSelected, useFocused } from 'slate-react'
 import { IconButton, Icon, Toolbar } from './components';
-import { BoldOutlined, ItalicOutlined, UnderlineOutlined,PictureOutlined } from '@ant-design/icons'
+import { BoldOutlined, ItalicOutlined, UnderlineOutlined, PictureOutlined } from '@ant-design/icons'
 import { css, cx } from '@emotion/css'
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
 
-export const MyPlainEditor = ({value,onChange, placeholder})=>{
-  const editor = useMemo(()=>withReact(createEditor()),[])
-    return (
-        <div>
-            <Slate editor={editor} value={value} onChange={value=>{
-                onChange(value)
-            }}>
-                <Editable placeholder={placeholder? placeholder :'输入内容...'} />
-            </Slate>
-        </div>
-    )
+export const MyPlainEditor = ({ value, onChange, placeholder }) => {
+  const editor = useMemo(() => withReact(createEditor()), [])
+  return (
+    <div>
+      <Slate editor={editor} value={value} onChange={value => {
+        onChange(value)
+      }}>
+        <Editable placeholder={placeholder ? placeholder : '输入内容...'} />
+      </Slate>
+    </div>
+  )
 }
 
 
-export const MyEditor = ({value,onChange})=>{
-    const editor = useMemo(() => withImages(withReact(createEditor())), [])
-    const renderElement = useCallback(props => <Element {...props} />, [])
-    const renderLeaf = useCallback(props => <Leaf {...props} />, [])
-    const onKeyDown = (editor, event) => {
-        console.log(editor)
-        const ref = Editor.pointRef(editor)
-        console.log(ref)
-        switch (event.key) {
+export const MyEditor = ({ value, onChange }) => {
+  const editor = useMemo(() => withImages(withReact(createEditor())), [])
+  const renderElement = useCallback(props => <Element {...props} />, [])
+  const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+  const onKeyDown = (editor, event) => {
+    console.log(editor)
+    const ref = Editor.pointRef(editor)
+    console.log(ref)
+    switch (event.key) {
 
-        case "&":
-            event.preventDefault()
-            editor.insertText('and')
-        }
+      case "&":
+        event.preventDefault()
+        editor.insertText('and')
     }
-    return(
-        <Slate
-        editor={editor}
-        value={value}
-        
-        onChange={newValue => onChange(newValue)}
-      >
-        <Toolbar>
-          {/* <MarkButton format="bold" icon={<BoldOutlined />} />
-          <MarkButton format="italic" icon={<ItalicOutlined />} />
-          <MarkButton format="underline" icon={<UnderlineOutlined />} /> */}
-          <BlockButton format="heading-one" icon="1" />
-          <BlockButton format="heading-two" icon="2" />
-          <BlockButton format="block-quote" icon="”" />
-          <InsertImageButton />
-        </Toolbar>
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          onKeyDown={event => onKeyDown(editor, event)}
-        />
-      </Slate>
-    )
+  }
+  return (
+    <Slate
+      editor={editor}
+      value={value}
+
+      onChange={newValue => onChange(newValue)}
+    >
+      <Toolbar>
+        <MarkButton format="bold" icon={<BoldOutlined />} />
+        <MarkButton format="italic" icon={<ItalicOutlined />} />
+        <MarkButton format="underline" icon={<UnderlineOutlined />} />
+        <BlockButton format="heading-one" icon="1" />
+        <BlockButton format="heading-two" icon="2" />
+        <BlockButton format="block-quote" icon="”" />
+        <InsertImageButton />
+      </Toolbar>
+      <Editable
+        renderElement={renderElement}
+        renderLeaf={renderLeaf}
+        onKeyDown={event => onKeyDown(editor, event)}
+      />
+    </Slate>
+  )
 }
 
 const withImages = editor => {
@@ -97,20 +97,20 @@ const withImages = editor => {
   return editor
 }
 
-const insertImage = (editor,url)=>{
-  const text = {text: ''}
-  const image = {type:'image',url,children:[text]}
-  Transforms.insertNodes(editor,image)
-  Transforms.insertNodes(editor,{type: 'paragraph', children:[text]})
+const insertImage = (editor, url) => {
+  const text = { text: '' }
+  const image = { type: 'image', url, children: [text] }
+  Transforms.insertNodes(editor, image)
+  Transforms.insertNodes(editor, { type: 'paragraph', children: [text] })
 }
 
-const InsertImageButton = ()=>{
+const InsertImageButton = () => {
   const editor = useSlate()
   return (
-    <IconButton onMouseDown={event=>{
+    <IconButton onMouseDown={event => {
       event.preventDefault()
       const url = 'https://yiyu-mp.oss-cn-zhangjiakou.aliyuncs.com/logo_bg.png?x-oss-process=style/ya'
-      insertImage(editor,url)
+      insertImage(editor, url)
     }}>
       <Icon><PictureOutlined /></Icon>
     </IconButton>
@@ -145,7 +145,7 @@ const toggleBlock = (editor, format) => {
       ),
     split: true,
   })
-  const newProperties= {
+  const newProperties = {
     type: isActive ? 'paragraph' : isList ? 'list-item' : format,
   }
   Transforms.setNodes(editor, newProperties)
