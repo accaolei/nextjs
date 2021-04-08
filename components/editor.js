@@ -8,6 +8,20 @@ import { css, cx } from '@emotion/css'
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
 
+export const MyPlainEditor = ({value,onChange, placeholder})=>{
+  const editor = useMemo(()=>withReact(createEditor()),[])
+    return (
+        <div>
+            <Slate editor={editor} value={value} onChange={value=>{
+                onChange(value)
+            }}>
+                <Editable placeholder={placeholder? placeholder :'输入内容...'} />
+            </Slate>
+        </div>
+    )
+}
+
+
 export const MyEditor = ({value,onChange})=>{
     const editor = useMemo(() => withImages(withReact(createEditor())), [])
     const renderElement = useCallback(props => <Element {...props} />, [])
@@ -42,7 +56,6 @@ export const MyEditor = ({value,onChange})=>{
         <Editable
           renderElement={renderElement}
           renderLeaf={renderLeaf}
-          
           onKeyDown={event => onKeyDown(editor, event)}
         />
       </Slate>
