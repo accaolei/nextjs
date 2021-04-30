@@ -101,7 +101,7 @@ const withImages = editor => {
 
 const insertImage = (editor, url) => {
   const text = { text: '' }
-  const image = { type: 'image', url, children: [text] }
+  const image = { type: 'image', url, border: false, children: [text] }
   Transforms.insertNodes(editor, image)
   Transforms.insertNodes(editor, { type: 'paragraph', children: [text] })
 }
@@ -264,7 +264,7 @@ const ImageElement = ({ attributes, children, element }) => {
       //   }
       // }
       >
-        <Card style={{ position: "absolute", top: -30, left: 0, display: taggert ? 'block' : 'none' }}
+        <Card style={{ position: "absolute", top: -30, left: 0, display: taggert ? 'block' : 'none', height: 50 }}
 
         >
           圆角 <Switch title="圆角" onChange={(value) => {
@@ -272,11 +272,11 @@ const ImageElement = ({ attributes, children, element }) => {
             console.log(2)
             const path = ReactEditor.findPath(editor, element)
             const newProperties = {
-              border: value,
-
+              children: [{ text: '' }],
+              border: true,
             }
 
-            Transforms.setNodes(editor, newProperties, { at: path })
+            Transforms.setNodes(editor, newProperties, { at: path, })
           }} />
         </Card>
         <img
