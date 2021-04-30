@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { createEditor, Editor, Transforms, Element as SlateElement } from 'slate'
-import { Slate, Editable, withReact, useSlate, useSelected, useFocused } from 'slate-react'
+import { Slate, Editable, withReact, useSlate, useSelected, useFocused, ReactEditor } from 'slate-react'
 import { IconButton, Icon, Toolbar } from './components';
 import { BoldOutlined, ItalicOutlined, UnderlineOutlined, PictureOutlined } from '@ant-design/icons'
 import { css, cx } from '@emotion/css'
+import { Card, Switch } from 'antd';
+import 'antd/dist/antd.css';
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
@@ -182,6 +184,7 @@ const isBlockActive = (editor, format) => {
 }
 
 const isMarkActive = (editor, format) => {
+  console.log(editor, format)
   const marks = Editor.marks(editor)
   return marks ? marks[format] === true : false
 }
@@ -240,9 +243,42 @@ const Element = (props) => {
 const ImageElement = ({ attributes, children, element }) => {
   const selected = useSelected()
   const focused = useFocused()
+  console.log("attributes", attributes)
+  console.log("children", children)
+  console.log("element", element)
+  const editor = useSlate()
+  const taggert = isBlockActive(editor, 'image')
+  console.log(taggert)
   return (
-    <div {...attributes}>
-      <div contentEditable={false}>
+    <div {...attributes} style={{ position: "relative" }}>
+      <div contentEditable={false}
+      // onClick={
+      //   () => {
+      //     const path = ReactEditor.findPath(editor, element)
+      //     const newProperties = {
+      //       border: true,
+
+      //     }
+
+      //     Transforms.setNodes(editor, newProperties, { at: path })
+      //   }
+      // }
+      >
+        <Card style={{ position: "absolute", top: -30, left: 0, display: taggert ? 'block' : 'none' }}
+
+        >
+          圆角 <Switch title="圆角" onChange={(value) => {
+            console.log(1)
+            console.log(2)
+            const path = ReactEditor.findPath(editor, element)
+            const newProperties = {
+              border: value,
+
+            }
+
+            Transforms.setNodes(editor, newProperties, { at: path })
+          }} />
+        </Card>
         <img
           src={element.url}
           className={css`
@@ -250,10 +286,11 @@ const ImageElement = ({ attributes, children, element }) => {
             max-width: 100%;
             max-height: 20em;
             box-shadow: ${selected && focused ? '0 0 0 3px #B4D5FF' : 'none'};
+            ${element.border ? 'border-radius: 4px' : ''}
           `}
         />
       </div>
-      {children}
-    </div>
+      { children}
+    </div >
   )
 }

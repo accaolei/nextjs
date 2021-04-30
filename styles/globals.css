@@ -23,3 +23,7 @@ blockquote {
     color: #aaa;
     font-style: italic;
 }
+img:focus{
+  outline: none;
+}
+
